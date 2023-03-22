@@ -62,6 +62,9 @@ func SendMessageV2(c *gin.Context) {
 		if guest != nil && ok {
 			ws.VisitorMessage(vistorInfo.VisitorId, content, kefuInfo)
 		}
+
+		fmt.Println("kefu message ========= ", content)
+
 		ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
 		//msg = TypeMessage{
 		//	Type: "message",
@@ -82,11 +85,20 @@ func SendMessageV2(c *gin.Context) {
 			"msg":  "ok",
 		})
 	}
+
 	if cType == "visitor" {
+
 		guest, ok := ws.ClientList[vistorInfo.VisitorId]
 		if ok && guest != nil {
 			guest.UpdateTime = time.Now()
 		}
+
+		fmt.Println("visitor message ========= ", content)
+		// 调用 chatgpt 接口
+
+		answer := tools.SendMessqge(content)
+		ws.KefuMessage(vistorInfo.VisitorId, answer, kefuInfo)
+
 		//kefuConns, ok := ws.KefuList[kefuInfo.Name]
 		//if kefuConns == nil || !ok {
 		//	c.JSON(200, gin.H{
