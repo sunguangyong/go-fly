@@ -2,6 +2,7 @@ package ws
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/models"
@@ -72,8 +73,9 @@ func AddKefuToList(kefu *User) {
 //给指定客服发消息
 func OneKefuMessage(toId string, str []byte) {
 	kefu, ok := KefuList[toId]
-	if ok{
-			log.Println("OneKefuMessage lock")
+	if ok {
+		    fmt.Println("kefu 接收消息 =========== ", string(str))
+		    log.Println("OneKefuMessage lock")
 			kefu.Mux.Lock()
 			defer kefu.Mux.Unlock()
 			log.Println("OneKefuMessage unlock")

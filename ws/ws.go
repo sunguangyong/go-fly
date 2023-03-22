@@ -130,6 +130,7 @@ func WsServerBackend() {
 			data := typeMsg.Data.(map[string]interface{})
 			from := data["from"].(string)
 			to := data["to"].(string)
+			fmt.Println(" tooooo ", to)
 			//限流
 			if tools.LimitFreqSingle("inputing:"+from, 1, 2) {
 				OneKefuMessage(to, message.content)
