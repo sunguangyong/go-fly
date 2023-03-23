@@ -116,6 +116,8 @@ func WsServerBackend() {
 		msgType := typeMsg.Type.(string)
 		log.Println("客户端:", string(message.content))
 
+		log.Println("wesocket ======= msgType ==== ", msgType, "data =====", typeMsg.Data)
+
 		switch msgType {
 		//心跳
 		case "ping":

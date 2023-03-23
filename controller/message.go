@@ -53,7 +53,7 @@ func SendMessageV2(c *gin.Context) {
 		})
 		return
 	}
-
+    // 记录消息
 	models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, cType)
 	//var msg TypeMessage
 	if cType == "kefu" {
@@ -94,10 +94,19 @@ func SendMessageV2(c *gin.Context) {
 		}
 
 		fmt.Println("visitor message ========= ", content)
-		// 调用 chatgpt 接口
 
+		// 调用 chatgpt 接口
 		answer := tools.SendMessqge(content)
-		ws.KefuMessage(vistorInfo.VisitorId, answer, kefuInfo)
+
+		if guest != nil && ok {
+			ws.VisitorMessage(vistorInfo.VisitorId, answer, kefuInfo)
+		}
+
+		fmt.Println("返回 message ========= ", content)
+
+		ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
+        // 记录chatgpt 消息
+		models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, answer, "kefu")
 
 		//kefuConns, ok := ws.KefuList[kefuInfo.Name]
 		//if kefuConns == nil || !ok {
